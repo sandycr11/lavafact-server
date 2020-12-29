@@ -1,67 +1,41 @@
-// Simulate config options from your production environment by
-// customising the .env file in your project's root folder.
-require('dotenv').config();
+require("dotenv").config();
 
-// Require keystone
-var keystone = require('keystone');
-
-// Initialise Keystone with your project's configuration.
-// See http://keystonejs.com/guide/config for available options
-// and documentation.
+const keystone = require("keystone");
+const { sluggify } = require("./utils");
 
 keystone.init({
-	'name': 'lavafact',
-	'brand': 'lavafact',
+	name: "lavafact",
+	brand: "lavafact",
+	mongo: process.env.MONGO_URI,
 
-	'less': 'public',
-	'static': 'public',
-	'favicon': 'public/favicon.ico',
-	'views': 'templates/views',
-	'view engine': 'pug',
+	// static: ["node_modules"],
 
-	'emails': 'templates/emails',
+	session: true,
+	"session store": "connect-mongo",
+	"session store options": { cookie: { maxAge: 36000000 } },
 
-	'auto update': true,
-	'session': true,
-	'auth': true,
-	'user model': 'User',
+	"cookie secret": process.env.COOKIE_SECRET,
+	"auto update": process.env.AUTO_UPDATE !== "false",
+	port: process.env.PORT || 3000,
+	auth: true,
+	"user model": "User",
+
+	"trust proxy": true
 });
 
-// Load your project's Models
-keystone.import('models');
+keystone.import("api/models");
 
-// Setup common locals for your templates. The following are required for the
-// bundled templates and layouts. Any runtime locals (that should be set uniquely
-// for each request) should be added to ./routes/middleware.js
-keystone.set('locals', {
-	_: require('lodash'),
-	env: keystone.get('env'),
+keystone.set("locals", {
+	_: require("lodash"),
+	env: keystone.get("env"),
 	utils: keystone.utils,
-	editable: keystone.content.editable,
+	editable: keystone.content.editable
 });
 
-// Load your project's Routes
-keystone.set('routes', require('./routes'));
+keystone.set("routes", require("./api"));
 
-
-// Configure the navigation bar in Keystone's Admin UI
-keystone.set('nav', {
-	posts: ['posts', 'post-categories'],
-	users: 'users',
+keystone.set("nav", {
+	users: "users"
 });
-
-// Start Keystone to connect to your database and initialise the web server
-
-
-if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
-	console.log('----------------------------------------'
-	+ '\nWARNING: MISSING MAILGUN CREDENTIALS'
-	+ '\n----------------------------------------'
-	+ '\nYou have opted into email sending but have not provided'
-	+ '\nmailgun credentials. Attempts to send will fail.'
-	+ '\n\nCreate a mailgun account and add the credentials to the .env file to'
-	+ '\nset up your mailgun integration');
-}
-
 
 keystone.start();

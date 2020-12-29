@@ -1,22 +1,48 @@
 {
   "name": "lavafact",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Lavafact Dashboard",
+  "author": "Sandy Campos Rodriguez <sandycr11@gmail.com>",
   "private": true,
   "dependencies": {
-    "keystone": "4.0.0-beta.5",
-    "lodash": "^4.13.1",
-    "pug": "2.0.0-beta11",
+    "async": "2.1.4",
+    "axios": "^0.21.1",
+    "connect-mongo": "^3.2.0",
+    "cross-env": "^7.0.3",
     "dotenv": "4.0.0",
+    "gsap": "^3.5.1",
+    "keystone": "4.0.0-beta.5",
     "keystone-email": "1.0.5",
-    "async": "2.1.4"
+    "lodash": "^4.13.1",
+    "node-sass": "^4.12.0",
+    "nuxt-express-module": "0.0.11",
+    "pug": "2.0.0-beta11",
+    "restful-keystone": "^0.3.0",
+    "sass-loader": "^7.1.0",
+    "@mdi/font": "^3.6.95",
+    "@nuxtjs/axios": "^5.5.3",
+    "nuxt": "^2.8.0",
+    "vue-chartist": "^2.2.0",
+    "vuetify": "^1.5.14",
+    "vuetify-loader": "^1.2.2"
   },
   "devDependencies": {
+    "@nuxt/types": "^2.14.12",
+    "babel-eslint": "^10.1.0",
     "eslint": "3.15.0",
     "eslint-config-keystone": "3.0.0",
-    "eslint-plugin-react": "^5.1.1"
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-react": "^5.1.1",
+    "eslint-plugin-vue": "^7.4.0",
+    "nodemon": "^2.0.6",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2"
   },
   "scripts": {
     "lint": "eslint .",
-    "start": "node keystone.js"
+    "postinstall": "nuxt build",
+    "start": "node keystone.js",
+    "dev": "nodemon --watch ./keystone.js --watch models --watch routes --watch updates --watch .env --watch nuxt.config.js --watch utils keystone.js"
   }
 }
